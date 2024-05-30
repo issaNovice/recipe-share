@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+ <div class="index">
+     <div class="index-container">
+        <div class="index-img"><img src="{% static 'images/remy.png' %}"></div>
+        <div class="index-login-btn">
+            <h4>Share you recipes online and search for other recipes. Login in to continue</h4>
+            <a href="{% url 'login' %}"><button>Login</button></a>
+        </div>
+     </div>
+ </div>
+{% endblock %}

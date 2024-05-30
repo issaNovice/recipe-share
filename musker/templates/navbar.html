@@ -1,0 +1,26 @@
+{% load static %}
+{% if request.user.is_authenticated %}
+<navbar class="navbar">
+  <div class="nav-element">
+    <a class="navbar-brand hi" href="{% url 'home' %}"><i class="fa fa-home" aria-hidden="true"></i></a>
+  </div>
+  <div class="nav-element">
+    <a class="navbar-brand hi" href="{% url 'post_meep' %}"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a>
+  </div>
+  <div class="nav-element">
+    <a class="navbar-brand hi" href="{% url 'search' %}"><i class="fa fa-search" aria-hidden="true"></i></a>
+  </div>
+  <div class="nav-element" id="extra-nav">
+    <a class="navbar-brand hi"><i class="fa fa-user" aria-hidden="true"></i></a>
+    <div class="dropup-menu">
+          <a href="{% url 'profile' request.user.id %}">Profile</a>
+          <a href="{% url 'liked_posts' %}">Liked Recipes</a>
+          <a href="{% url 'logout' %}">Logout</a>
+  </div>
+  </div>
+</navbar>
+
+<div class="nav-dummy">
+</div>
+{% endif %}
+

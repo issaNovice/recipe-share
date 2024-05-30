@@ -1,0 +1,64 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1 style="text-align: center; padding: 2rem auto;"><i class="fa-solid fa-heart"></i> Liked Recipes</h1>
+{% for meep in liked_meeps %}
+<div class="meeps">
+	<div class="row1">
+		<div class="img-name">
+			<div class="profile-image">{% if meep.user.profile.profile_image %}
+				<img src="{{ meep.user.profile.profile_image.url }}" width=40 height=40 class="rounded-circle" alt="{{ profile.user.username }}">
+				{% else %}
+				<img src="{% static 'images/default_profile_pic.webp' %}" width=40 height=40 class="rounded-circle" alt="{{ profile.user.username }}">    
+				{% endif %}
+			</div>
+			<div class="home-name"> {% if meep.user.id %}
+				<div class="home-name">
+					<a href="{% url 'profile' meep.user.id %}">@{{ meep.user.username }}</a>
+				</div>
+			{% else %}
+				<div class="home-name">@{{ meep.user.username }}</div>
+			{% endif %}</div>
+		</div>
+		<div class="view-btn"><button class="view-button" data-id="{{ meep.id }}">View</button></div>
+		{% if request.user.username == profile.user.username %}
+	<a href="{% url 'delete_meep' meep.id %}"><i class="fa fa-trash" style="color:gray; font-size:24px;"></i></a>
+		{% endif %}
+	</div>
+	<div class="row2">
+		<div class="row2-fix">
+		{% if meep.photo %}
+			<img src="{{ meep.photo.url }}">
+		{% else %}
+			<img src="{% static 'images/default_food.png' %}">
+		{% endif %}
+		</div>
+	</div>
+	<div class="row3">
+		<div class="username">{{ meep.body }}</div>
+		<div class="no.likes">
+			{% if user in meep.likes.all %}
+			  <a href="{% url 'meep_like' meep.id %}" class="heart">
+				<i class="fa-solid fa-heart" style="color:red"></i></a>
+			{% else %}
+				<a href="{% url 'meep_like' meep.id %}" class="heart">
+				<i class="fa fa-heart-o" style="color:red"></i></a>
+			{% endif %}
+			<div class="like">{{ meep.number_of_likes }} </div>
+		</div>
+	</div><br><br><br><br><br><br>
+	{% empty %}
+    <p style="text-align: center; font-size: 30px; font-weight: 700; padding-top: 100px;">"No liked posts yet."<br><i class="fa-regular fa-folder-open" style="font-size: 100px;"></i></p>
+{% endfor %}
+<div id="lightbox-modal" class="lightbox-modal">
+    <div class="lightbox-content">
+        <span class="close-button">&times;</span>
+        <h2 id="meep-body"></h2><br><br>
+        <p id="meep-ingredients"></p><br><br>
+        <p id="meep-procedure"></p><br><br>
+    </div>
+</div>
+<script src="{% static 'index.js' %}"></script>
+
+{% endblock %}

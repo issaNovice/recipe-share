@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+<h1>You're Already Logged In!</h1>
+{% else %}
+  <div class="login-container">
+      <h3>Savoury</h3>
+      <br/>
+      <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <div class="name-div">
+          
+          <input type="text" class="name" name="username" placeholder="Enter Your Username">
+          
+        </div>
+        <div class="pass-div">
+          <input type="password" class="password" name="password" placeholder="Enter Your Password">
+        </div>
+        <br/>
+        <button type="submit" class="login-btn">Login</button>
+        <div><a href="{% url 'register' %}">Don't have an account? Click here</a></div>
+      </form>
+
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% if profile %}
+<div class="profile-tag">
+
+		{% if profile.profile_image %}
+		<img src="{{ profile.profile_image.url }}" width=100 height=100 class="rounded-circle" alt="{{ profile.user.username }}">	
+		{% else %}
+		<img src="{% static 'images/default_profile_pic.webp' %}" width=100 height=100 class="rounded-circle" alt="{{ profile.user.username }}">	
+		{% endif %}
+		<div class="profile-edit">
+			<div>
+			{% if request.user.username == profile.user.username %}
+				<h2>You</h2>
+			{% else %}
+				<h2>{{ profile.user.username }}<h2>
+			{% endif %}
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'update_user' %}">Edit Profile</a>
+			{% endif %}
+			</div>
+		</div>
+</div>
+
+{% for meep in meeps %}
+<div class="meeps">
+	
+	<div class="row1">
+		<div class="img-name">
+			<div class="profile-image">{% if meep.user.profile.profile_image %}
+				<img src="{{ meep.user.profile.profile_image.url }}" width=40 height=40 class="rounded-circle" alt="{{ profile.user.username }}" loading="lazy">
+				{% else %}
+				<img src="{% static 'images/default_profile_pic.webp' %}" width=40 height=40 class="rounded-circle" alt="{{ profile.user.username }}" loading="lazy">    
+				{% endif %}
+			</div>
+			<div class="home-name"> {% if meep.user.id %}
+				<div class="home-name">
+					<a href="{% url 'profile' meep.user.id %}">@{{ meep.user.username }}</a>
+				</div>
+			{% else %}
+				<div class="home-name">@{{ meep.user.username }}</div>
+			{% endif %}</div>
+		</div>
+		<div class="view-btn"><button class="view-button" data-id="{{ meep.id }}">View</button></div>
+		{% if request.user.username == profile.user.username %}
+	<a href="{% url 'delete_meep' meep.id %}"><i class="fa-solid fa-trash" style="font-size: 30px; color: black;"></i></a>
+		{% endif %}
+	</div>
+	<div class="row2">
+		<div class="row2-fix">
+		{% if meep.photo %}
+			<img src="{{ meep.photo.url }}" loading="lazy">
+		{% else %}
+			<img src="{% static 'images/default_food.png' %}" loading="lazy">
+		{% endif %}
+		</div>
+	</div>
+	<div class="row3">
+		<div class="username">{{ meep.body }}</div>
+		<div class="no.likes">
+			{% if user in meep.likes.all %}
+			  <a href="{% url 'meep_like' meep.id %}" class="heart">
+				<i class="fa-solid fa-heart" style="color:red"></i></a>
+			{% else %}
+				<a href="{% url 'meep_like' meep.id %}" class="heart">
+				<i class="fa fa-heart-o" style="color:red"></i></a>
+			{% endif %}
+			<div class="like">{{ meep.number_of_likes }} </div>
+		</div>
+	</div><br><br><br><br><br><br>
+	{% empty %}
+	<h3 style="text-align: center; padding-top: 20px;">"No recipes yet"</h3>
+	{% endfor %}
+</div>
+{% endif %}
+</div>
+<div id="lightbox-modal" class="lightbox-modal">
+<div class="lightbox-content">
+	<span class="close-button">&times;</span>
+	<h2 id="meep-body"></h2><br><br>
+	<p id="meep-ingredients"></p><br><br>
+	<p id="meep-procedure"></p><br><br>
+</div>
+</div>
+<script src="{% static 'index.js' %}"></script>
+{% endblock %}
